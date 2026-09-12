@@ -1,6 +1,7 @@
 package com.example.itis.service;
 
 import com.example.itis.entity.UserEntity;
+import com.example.itis.exception.UserAlreadyExistsException;
 import com.example.itis.helper.PasswordHelper;
 import com.example.itis.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,12 +15,15 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordHelper passwordHelper;
 
     @Override
-    public void register(String username, String password) {
+    public void register(String email, String password) {
         String hashedPassword = passwordHelper.hash(password);
         UserEntity userEntity = UserEntity.builder()
-                .email(username)
+                .email(email)
                 .password(hashedPassword)
                 .build();
-        userRepository.saveUser(userEntity);
+        if (userRepository.existsByEmail(email)) {
+            throw new UserAlreadyExistsException(email);
+        }
+        userRepository.save(userEntity);
     }
 }

@@ -4,5 +4,6 @@ import com.example.itis.entity.UserEntity;
 
 public interface UserRepository {
 
-    void saveUser(UserEntity user);
+    void save(UserEntity user);
+    boolean existsByEmail(String email);
 }
