@@ -2,6 +2,7 @@ package com.example.itis.service;
 
 import com.example.itis.entity.UserEntity;
 import com.example.itis.entity.UserSessionEntity;
+import com.example.itis.exception.UserWithTokenNotExistsException;
 import com.example.itis.repository.SessionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,9 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public Optional<UserEntity> findBySession(String token) {
-        return Optional.empty();
+    public UserEntity findBySession(String token) {
+        return sessionRepository.findBySession(token).orElseThrow(
+                () -> new UserWithTokenNotExistsException(token)
+        );
     }
 }

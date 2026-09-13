@@ -3,6 +3,7 @@ package com.example.itis.exceptionhandler;
 import com.example.itis.exception.UserAlreadyExistsException;
 import com.example.itis.exception.UserNotExistsException;
 import com.example.itis.exception.UserPasswordIncorrectException;
+import com.example.itis.exception.UserWithTokenNotExistsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ui.Model;
@@ -39,5 +40,14 @@ public class GlobalExceptionHandler {
     ) {
         model.addAttribute("error", exception.getMessage());
         return "login";
+    }
+
+    @ExceptionHandler(UserWithTokenNotExistsException.class)
+    public String handleUserWithTokenNotExists(
+            UserWithTokenNotExistsException exception,
+            Model model
+    ) {
+        model.addAttribute("error", "Вы не авторизованы");
+        return "redirect:/login";
     }
 }
