@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Repository
@@ -37,7 +38,7 @@ public class SessionRepositoryImpl implements SessionRepository {
         String sql = """
             SELECT id, email, password
             FROM users INNER JOIN user_sessions ON users.id = user_sessions.user_id
-            WHERE token = ?
+            WHERE token = ? AND expires_at > CURRENT_TIMESTAMP
             """;
         return jdbcTemplate.query(
                 sql,
