@@ -32,10 +32,10 @@ public class AuthInterceptor implements HandlerInterceptor {
             return false;
         }
 
-        Optional<UserEntity> userId =
+        Optional<UserEntity> user =
                 sessionRepository.findBySession(token);
 
-        if (userId.isEmpty()) {
+        if (user.isEmpty()) {
             response.sendRedirect("/login");
             return false;
         }

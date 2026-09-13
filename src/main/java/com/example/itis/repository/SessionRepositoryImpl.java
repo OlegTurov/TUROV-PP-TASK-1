@@ -36,7 +36,7 @@ public class SessionRepositoryImpl implements SessionRepository {
     @Override
     public Optional<UserEntity> findBySession(String token) {
         String sql = """
-            SELECT id, email, password
+            SELECT users.id, email, password
             FROM users INNER JOIN user_sessions ON users.id = user_sessions.user_id
             WHERE token = ? AND expires_at > CURRENT_TIMESTAMP
             """;
