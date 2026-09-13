@@ -1,5 +1,6 @@
 package com.example.itis.controller;
 
+import com.example.itis.dto.AuthenticateRequest;
 import com.example.itis.dto.RegisterRequest;
 import com.example.itis.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -27,11 +28,24 @@ public class AuthControllerImpl implements AuthController {
 
     @Override
     @PostMapping("/register")
-    @ResponseStatus(HttpStatus.CREATED)
     public String register(RegisterRequest registerRequest) {
         String email = registerRequest.email();
         String password = registerRequest.password();
         authService.register(email, password);
-        return "register";
+        return "redirect:/login";
+    }
+
+    @Override
+    @GetMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
+    public String loginPage() {
+        return "login";
+    }
+
+    @Override
+    @PostMapping("/login")
+    public String login(AuthenticateRequest authenticateRequest) {
+        String token = authService.login(authenticateRequest.email(), authenticateRequest.password());
+        return "redirect:/posts";
     }
 }
