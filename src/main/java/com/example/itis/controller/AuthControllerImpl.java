@@ -29,14 +29,9 @@ public class AuthControllerImpl implements AuthController {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public String register(RegisterRequest registerRequest) {
-        try {
-            String email = registerRequest.email();
-            String password = registerRequest.password();
-            authService.register(email, password);
-            log.info("User with email {} was registered", email);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
+        String email = registerRequest.email();
+        String password = registerRequest.password();
+        authService.register(email, password);
         return "register";
     }
 }
