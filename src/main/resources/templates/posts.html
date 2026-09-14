@@ -87,6 +87,7 @@
 
 <header>
     <h1>Посты</h1>
+    <div th:text="${user.email}"></div>
 
     <form th:action="@{/logout}" method="post">
         <button

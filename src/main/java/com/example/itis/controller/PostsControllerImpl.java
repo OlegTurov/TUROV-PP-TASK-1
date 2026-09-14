@@ -20,7 +20,8 @@ public class PostsControllerImpl implements PostsController {
     private final PostsService postsService;
 
     @GetMapping("/posts")
-    public String posts(Model model) {
+    public String posts(Model model, HttpServletRequest request) {
+        model.addAttribute("user", request.getAttribute("user"));
         model.addAttribute("posts", postsService.findAll());
         return "posts";
     }

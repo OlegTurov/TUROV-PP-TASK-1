@@ -8,6 +8,14 @@
 
 <h1>Авторизация</h1>
 
+<form th:action="@{/register}" method="get">
+    <button
+            type="submit"
+            class="register-button">
+        Зарегистрироваться
+    </button>
+</form>
+
 <div th:if="${error}" th:text="${error}"></div>
 
 <form th:action="@{/login}" method="post">
