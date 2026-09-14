@@ -137,5 +137,49 @@
 
 </div>
 
+...
+
+<script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.1.1/bundles/stomp.umd.min.js"></script>
+
+<script>
+    const client = new StompJs.Client({
+        brokerURL: 'ws://' + window.location.host + '/ws'
+    });
+
+    client.onConnect = function () {
+        client.subscribe('/topic/posts', function (message) {
+            const post = JSON.parse(message.body);
+
+            addPost(post);
+        });
+    };
+
+    client.activate();
+
+    function addPost(post) {
+        const posts = document.querySelector('.posts');
+
+        const element = document.createElement('div');
+        element.className = 'post';
+
+        element.innerHTML = `
+                <div class="post-email">${post.email}</div>
+                <div class="post-text"></div>
+            `;
+
+        element.querySelector('.post-text').textContent = post.text;
+
+        posts.prepend(element);
+
+        const allPosts = posts.querySelectorAll('.post');
+
+        if (allPosts.length > 10) {
+            allPosts[allPosts.length - 1].remove();
+        }
+    }
+</script>
+
 </body>
 </html>
+
+

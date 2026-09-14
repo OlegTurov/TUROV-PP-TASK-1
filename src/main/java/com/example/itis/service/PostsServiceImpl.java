@@ -14,6 +14,7 @@ import java.util.List;
 public class PostsServiceImpl implements PostsService {
 
     private final PostsRepository postsRepository;
+    private final PostsWebSocketService postWebSocketService;
 
     @Override
     public void create(UserEntity userEntity, String text) {
@@ -22,6 +23,14 @@ public class PostsServiceImpl implements PostsService {
                 .userId(userEntity.getId())
                 .build();
         postsRepository.save(post);
+
+        PostResponse response = new PostResponse(
+                post.getEmail(),
+                post.getText(),
+                post.getCreatedAt()
+        );
+
+        postWebSocketService.send(response);
     }
 
     @Override
