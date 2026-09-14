@@ -2,6 +2,7 @@ package com.example.itis.interceptor;
 
 import com.example.itis.entity.UserEntity;
 import com.example.itis.repository.SessionRepository;
+import com.example.itis.service.SessionService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,7 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthInterceptor implements HandlerInterceptor {
 
-    private final SessionRepository sessionRepository;
+    private final SessionService sessionService;
 
     @SneakyThrows
     @Override
@@ -32,13 +33,15 @@ public class AuthInterceptor implements HandlerInterceptor {
             return false;
         }
 
-        Optional<UserEntity> user =
-                sessionRepository.findBySession(token);
+        UserEntity user =
+                sessionService.findBySession(token);
 
-        if (user.isEmpty()) {
+        if (user == null) {
             response.sendRedirect("/login");
             return false;
         }
+
+        request.setAttribute("user", user);
 
         return true;
     }
