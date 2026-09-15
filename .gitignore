@@ -150,3 +150,5 @@ modules.xml
 
 
 target/
+
+src/main/resources/secrets.yaml
