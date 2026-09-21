@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -18,14 +20,11 @@ import java.util.Optional;
 public class AuthInterceptor implements HandlerInterceptor {
 
     private final SessionService sessionService;
+    private Logger log = LoggerFactory.getLogger(AuthInterceptor.class);
 
     @SneakyThrows
     @Override
-    public boolean preHandle(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            Object handler
-    ) {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String token = getSessionToken(request);
 
         if (token == null) {
@@ -33,13 +32,14 @@ public class AuthInterceptor implements HandlerInterceptor {
             return false;
         }
 
-        UserEntity user =
-                sessionService.findBySession(token);
+        UserEntity user = sessionService.findBySession(token);
 
         if (user == null) {
             response.sendRedirect("/login");
             return false;
         }
+
+        log.info("User {} found by session", user.getEmail());
 
         request.setAttribute("user", user);
 

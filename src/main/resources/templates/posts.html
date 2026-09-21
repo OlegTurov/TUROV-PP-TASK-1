@@ -2,7 +2,7 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Посты</title>
+    <title th:text="#{posts}">Посты</title>
     <style>
         * {
             box-sizing: border-box;
@@ -86,13 +86,15 @@
 <body>
 
 <header>
-    <h1>Посты</h1>
+    <h1 th:text="#{posts}">Посты</h1>
     <div th:text="${user.email}"></div>
-
+    <a href="/locale/ru">RU</a>
+    <a href="/locale/en">EN</a>
     <form th:action="@{/logout}" method="post">
         <button
                 type="submit"
-                class="logout-button">
+                class="logout-button"
+                th:text="#{exit}">
             Выйти
         </button>
     </form>
@@ -101,15 +103,15 @@
 <div class="container">
 
     <div class="create-post">
-        <h2>Создать пост</h2>
+        <h2 th:text="#{create}">Создать пост</h2>
 
         <form th:action="@{/posts}" method="post">
             <textarea
                     name="text"
-                    placeholder="Введите текст поста"
+                    th:placeholder="#{entertext}"
                     required></textarea>
 
-            <button type="submit">
+            <button type="submit" th:text="#{publish}">
                 Опубликовать
             </button>
         </form>

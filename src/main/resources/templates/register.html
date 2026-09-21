@@ -2,16 +2,18 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Регистрация</title>
+    <title th:text="#{reg}">Регистрация</title>
 </head>
 <body>
 
-<h1>Регистрация</h1>
-
+<h1 th:text="#{reg}">Регистрация</h1>
+<a href="/locale/ru">RU</a>
+<a href="/locale/en">EN</a>
 <form th:action="@{/login}" method="get">
     <button
             type="submit"
-            class="register-button">
+            class="register-button"
+            th:text="#{auth_do}">
         Авторизоваться
     </button>
 </form>
@@ -26,11 +28,11 @@
     </div>
 
     <div>
-        <label for="password">Пароль:</label>
+        <label for="password" th:text="#{password}">Пароль:</label>
         <input id="password" name="password" type="password" required>
     </div>
 
-    <button type="submit">Зарегистрироваться</button>
+    <button type="submit" th:text="#{reg_do}">Зарегистрироваться</button>
 
 </form>
 

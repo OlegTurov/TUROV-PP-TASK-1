@@ -5,6 +5,8 @@ import com.example.itis.service.PostsService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class PostsControllerImpl implements PostsController {
 
     private final PostsService postsService;
+    private final static Logger log = LoggerFactory.getLogger(PostsControllerImpl.class);
 
     @GetMapping("/posts")
     public String posts(Model model, HttpServletRequest request) {
@@ -30,6 +33,8 @@ public class PostsControllerImpl implements PostsController {
     public String createPost(@RequestParam String text, HttpServletRequest request) {
         UserEntity user =
                 (UserEntity) request.getAttribute("user");
+
+        log.info("user {}", user.getEmail());
 
         postsService.create(user, text);
 

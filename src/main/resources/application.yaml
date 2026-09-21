@@ -2,6 +2,10 @@ spring:
   config:
     import: optional:classpath:secrets.yaml
 
+  messages:
+    basename: messages
+    encoding: UTF-8
+
   datasource:
     url: jdbc:postgresql://localhost:5432/pp_task_1
     username: ${DB_USERNAME}

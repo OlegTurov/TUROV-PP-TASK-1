@@ -5,6 +5,8 @@ import com.example.itis.entity.PostEntity;
 import com.example.itis.entity.UserEntity;
 import com.example.itis.repository.PostsRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +17,7 @@ public class PostsServiceImpl implements PostsService {
 
     private final PostsRepository postsRepository;
     private final PostsWebSocketService postWebSocketService;
+    private final static Logger log = LoggerFactory.getLogger(PostsServiceImpl.class);
 
     @Override
     public void create(UserEntity userEntity, String text) {
@@ -22,15 +25,20 @@ public class PostsServiceImpl implements PostsService {
                 .text(text)
                 .userId(userEntity.getId())
                 .build();
+
         postsRepository.save(post);
 
+        log.info("Post created: {} {}", userEntity.getEmail(), post.getText());
+
         PostResponse response = new PostResponse(
-                post.getEmail(),
+                userEntity.getEmail(),
                 post.getText(),
                 post.getCreatedAt()
         );
 
         postWebSocketService.send(response);
+
+        log.info("Post was send through WebSocket: {} {}", post.getEmail(), post.getText());
     }
 
     @Override
